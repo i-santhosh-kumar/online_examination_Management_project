@@ -1,0 +1,34 @@
+<?php
+session_start();
+$name=$_SESSION['student_name'];
+$dept=$_SESSION['student_department'];
+$batch=$_SESSION['batch'];
+$semester=$_SESSION['semester'];
+$year=$_SESSION['years'];
+$rollnumber=$_SESSION['roll_number'];
+$gmail=$_SESSION['student_gmail'];
+include_once('../dbconfig.php');
+if($_SERVER['REQUEST_METHOD']=='POST')
+{
+    if($connection)
+    {
+        $favques=$_POST['favques'];
+        $place=$_POST['place'];
+        $lang=$_POST['language'];
+        $update="UPDATE student SET favqus='$favques', favplace='$place', favlanguage='$lang' where student_name='$name' and department='$dept' and batch='$batch' and roll_number='$rollnumber' and years='$year' and semester='$semester' and gmail='$gmail'";
+        $result=mysqli_query($connection,$update);
+        if($result)
+        {
+            header('location:index.php');
+        }
+    }
+    else
+    {
+        die('something went wrong with database'.mysqli_connect_error());
+    }
+}
+else
+{
+    header('location:student-login.php');
+}
+?>
